@@ -296,4 +296,6 @@ When the user asks to update after a real fix:
 
 Full bodies: [checkpoints.md](checkpoints.md).
 
+[checkpoints.md](checkpoints.md) also ends with **Quick triage: front vs server** — a one-table split of which insights are front, server/CDN/ops, or DevTools-only, plus how each role should treat the server column.
+
 Chrome insight index: https://developer.chrome.com/docs/performance/insights/
