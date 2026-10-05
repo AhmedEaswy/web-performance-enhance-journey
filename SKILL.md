@@ -34,7 +34,7 @@ Run this **before editing**. A pasted PageSpeed / Lighthouse report adds evidenc
 
 1. **Intake.** Note the audited URL or page, mobile vs desktop, lab paste (yes/no), and **who owns the server**. Infer from the repo when possible (SSR app, `nginx`/`vercel.json`/`routeRules`/Docker in-repo → likely owns origin). If unclear, ask once: front-only, backend-only, or full-stack (owns app + hosting/CDN config). With no lab data, still census and label findings as **code risk**, not scores. If code risk is large and no URL/report exists, ask once for a PSI URL — still show the ranked list from the census.
 2. **Census (read-only).** Follow the **front** and **backend** checklists below. Bucket heavy libraries and server surfaces. Record **only** what this repo (and owned hosting config) actually has.
-3. **Map.** For each finding and each pasted insight, attach a checkpoint id from [checkpoints.md](checkpoints.md), owner (`front` / `server` / `both` / `devtools-only`), evidence, the fix class, and the stop line.
+3. **Map.** For each finding and each pasted insight, get the checkpoint id from [routing.md](routing.md) (insight id → checkpoint). Fall back to matching the insight name against `checkpoints/*.md`. Attach owner (`front` / `server` / `both` / `devtools-only`), evidence, the fix class, and the stop line. Open only the checkpoint files that the report actually points at — do not read the whole library.
 4. **Rank, then show the list before coding** (use the template below).
    - **Now:** fails or threatens LCP, CLS, INP, or document TTFB on the audited page; cause is in a surface the user **owns** (`front`, `server`, or the owned half of `both`).
    - **Next:** same class of fix, lower impact, or safe follow-ups on an owned surface.
@@ -231,13 +231,13 @@ Use stack-neutral verbs. Framework-specific APIs (e.g. `hydrate-on-visible`, `v-
 
 After the ranked list exists, apply each fix with these rules:
 
-1. **Map insights → checkpoints** in [checkpoints.md](checkpoints.md). Match by insight name or symptom.
+1. **Map insights → checkpoints** with [routing.md](routing.md) first (insight/audit id → checkpoint). Only fall back to matching by insight name or symptom when the id is not routed. Then open just `checkpoints/<id>.md` (shape + authoring rules: [checkpoints.md](checkpoints.md)).
 2. **Prefer filled checkpoints.** Status `filled` = follow check / fix / ownership / stop. Status `stub` should not appear; if one does, use general web.dev knowledge and offer to fill after a real fix.
 3. **Read ownership + role first.** Work only on surfaces the user owns (see Who owns what). For **`both`**, sequence by Default Now order.
 4. **Honor “Stop here” for unowned or true residuals.** When the checkpoint’s stop criteria match **and** no owned lever remains, say so in one sentence — do not invent fake patches on the wrong layer.
 5. **Find root cause, not only victims.** Lighthouse often lists shifted/slow nodes that are symptoms (e.g. LCP load delay that is really TTFB or discovery).
 6. **Fix with the smallest change** that matches “How to fix.” Prefer stack-neutral patterns; adapt to the repo’s framework and server stack. Obey **Product safety** — identical behavior beats a better lab score.
-7. **Report briefly:** checkpoint id(s), front vs server, what changed (or why stopped), pass bar, and any deferred tradeoff that needs product sign-off.
+7. **Report briefly:** checkpoint id(s), front vs server, what changed (or why stopped), pass bar, and any deferred tradeoff that needs product sign-off. A claim of improvement needs the measurement protocol in [verification.md](verification.md) (same URL/device, median of ≥3 runs, inside the noise floor or it is not a win).
 
 ## Ownership legend
 
@@ -252,50 +252,55 @@ After the ranked list exists, apply each fix with these rules:
 
 When the user asks to update after a real fix:
 
-1. Open [checkpoints.md](checkpoints.md).
+1. Open (or create) `checkpoints/<id>.md` — one checkpoint per file, file name = id. Shape and authoring rules: [checkpoints.md](checkpoints.md).
 2. Fill/revise **What to check**, **How to fix**, **Ownership**, **Stop here**, **Hint**, **Pass bar**.
 3. Set `status: filled`.
 4. Write hints as **symptom → cause class → fix class → stop**. Use **category patterns** (carousel, validator, marquee, glow raster, redirect chain, cache TTL, etc.). Do **not** name products, routes, component files, brand colors, hashed bundles, or asset filenames.
 5. Library / platform names may appear only as members of a category, never as the only tool the skill knows. Prefer stack-neutral wording; framework or host APIs only as optional examples.
 6. Keep front and server fix guidance equally concrete when both apply.
 7. Do not rewrite unrelated checkpoints.
+8. Route it: add the insight/audit id → checkpoint row in [routing.md](routing.md) if the report uses an id not yet mapped.
+9. Refresh the generated index and validate: `node scripts/build-index.mjs && node scripts/validate.mjs`. Add the index row in **Checkpoint index** below if the checkpoint is new.
 
 ## Checkpoint index
 
+One file per checkpoint in `checkpoints/` — open only the ones a report points at.
+
 | ID | Checkpoint | Owner | Status |
 |----|------------|-------|--------|
-| cwv-cls | Cumulative Layout Shift / layout shift culprits | front | filled |
-| cwv-lcp | Largest Contentful Paint / LCP breakdown | both | filled |
-| lcp-discovery | LCP request discovery | front | filled |
-| cwv-inp | Interaction to Next Paint / INP breakdown | front | filled |
-| img-size | Unsized images / width & height / aspect-ratio | front | filled |
-| img-delivery | Improve image delivery (format, size, srcset) | both | filled |
-| img-encode | Efficiently encode / compress images | both | filled |
-| img-lazy | Lazy-load offscreen images (never lazy LCP) | front | filled |
-| css-js-block | Render-blocking requests | front | filled |
-| css-unused | Unused CSS | front | filled |
-| css-selector | CSS selector costs (recalculate style) | front | filled |
-| js-unused | Unused JavaScript | front | filled |
-| js-duplicated | Duplicated JavaScript | front | filled |
-| preload | Preloads / critical request chain | front | filled |
-| ttfb | Document request latency / TTFB | server | filled |
-| net-tree | Network dependency tree | both | filled |
-| fonts | Web fonts (display, metrics, preload) | front | filled |
-| third-party | Third-party code / origins | both | filled |
-| cache | Cache lifetimes / static assets | both | filled |
-| main-thread | Minimize main-thread work / long tasks | front | filled |
-| dom-size | Avoid large DOM size | front | filled |
-| reflow | Forced reflow / layout thrashing | front | filled |
-| legacy-js | Legacy JavaScript / polyfills | front | filled |
-| http | Modern HTTP (HTTP/2 / HTTP/3) | server | filled |
-| viewport-mobile | Optimize viewport for mobile | front | filled |
-| pattern-skeleton | Skeleton ↔ real content height parity | front | filled |
-| pattern-inject | Dynamically injected content | front | filled |
-| pattern-motion | Animation CLS-safety | front | filled |
-| pattern-hero | Above-the-fold / hero media priority | front | filled |
+| [cwv-cls](checkpoints/cwv-cls.md) | Cumulative Layout Shift / layout shift culprits | front | filled |
+| [cwv-lcp](checkpoints/cwv-lcp.md) | Largest Contentful Paint / LCP breakdown | both | filled |
+| [lcp-discovery](checkpoints/lcp-discovery.md) | LCP request discovery | front | filled |
+| [cwv-inp](checkpoints/cwv-inp.md) | Interaction to Next Paint / INP breakdown | front | filled |
+| [img-size](checkpoints/img-size.md) | Unsized images / width & height / aspect-ratio | front | filled |
+| [img-delivery](checkpoints/img-delivery.md) | Improve image delivery (format, size, srcset) | both | filled |
+| [img-encode](checkpoints/img-encode.md) | Efficiently encode / compress images | both | filled |
+| [img-lazy](checkpoints/img-lazy.md) | Lazy-load offscreen images (never lazy LCP) | front | filled |
+| [css-js-block](checkpoints/css-js-block.md) | Render-blocking requests | front | filled |
+| [css-unused](checkpoints/css-unused.md) | Unused CSS | front | filled |
+| [css-selector](checkpoints/css-selector.md) | CSS selector costs (recalculate style) | front | filled |
+| [js-unused](checkpoints/js-unused.md) | Unused JavaScript | front | filled |
+| [js-duplicated](checkpoints/js-duplicated.md) | Duplicated JavaScript | front | filled |
+| [total-byte-weight](checkpoints/total-byte-weight.md) | Total page weight / payload budget | both | filled |
+| [preload](checkpoints/preload.md) | Preloads / critical request chain | front | filled |
+| [ttfb](checkpoints/ttfb.md) | Document request latency / TTFB | server | filled |
+| [net-tree](checkpoints/net-tree.md) | Network dependency tree | both | filled |
+| [fonts](checkpoints/fonts.md) | Web fonts (display, metrics, preload) | front | filled |
+| [third-party](checkpoints/third-party.md) | Third-party code / origins | both | filled |
+| [third-party-facades](checkpoints/third-party-facades.md) | Lazy-load third-party resources with facades | front | filled |
+| [cache](checkpoints/cache.md) | Cache lifetimes / static assets | both | filled |
+| [bf-cache](checkpoints/bf-cache.md) | Back/forward cache eligibility | both | filled |
+| [main-thread](checkpoints/main-thread.md) | Minimize main-thread work / long tasks | front | filled |
+| [dom-size](checkpoints/dom-size.md) | Avoid large DOM size | front | filled |
+| [reflow](checkpoints/reflow.md) | Forced reflow / layout thrashing | front | filled |
+| [legacy-js](checkpoints/legacy-js.md) | Legacy JavaScript / polyfills | front | filled |
+| [http](checkpoints/http.md) | Modern HTTP (HTTP/2 / HTTP/3) | server | filled |
+| [viewport-mobile](checkpoints/viewport-mobile.md) | Optimize viewport for mobile | front | filled |
+| [pattern-skeleton](checkpoints/pattern-skeleton.md) | Skeleton ↔ real content height parity | front | filled |
+| [pattern-inject](checkpoints/pattern-inject.md) | Dynamically injected content | front | filled |
+| [pattern-motion](checkpoints/pattern-motion.md) | Animation CLS-safety | front | filled |
+| [pattern-hero](checkpoints/pattern-hero.md) | Above-the-fold / hero media priority | front | filled |
 
-Full bodies: [checkpoints.md](checkpoints.md).
-
-[checkpoints.md](checkpoints.md) also ends with **Quick triage: front vs server** — a one-table split of which insights are front, server/CDN/ops, or DevTools-only, plus how each role should treat the server column.
+[checkpoints.md](checkpoints.md) holds the checkpoint shape, the authoring rules, and the **Quick triage: front vs server** table. [routing.md](routing.md) maps insight ids → checkpoints. [verification.md](verification.md) is the measurement protocol. `checkpoints.json` is the generated machine-readable index (id, owner, status, pass bar, insights).
 
 Chrome insight index: https://developer.chrome.com/docs/performance/insights/

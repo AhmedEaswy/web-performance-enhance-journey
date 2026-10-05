@@ -1,0 +1,399 @@
+{
+  "generatedBy": "scripts/build-index.mjs",
+  "note": "Generated file. Run `node scripts/build-index.mjs` after editing checkpoints/ or routing.md.",
+  "count": 32,
+  "checkpoints": [
+    {
+      "id": "bf-cache",
+      "title": "Back/forward cache eligibility",
+      "owner": "both",
+      "status": "filled",
+      "devtoolsOnly": false,
+      "file": "checkpoints/bf-cache.md",
+      "insights": [
+        "bf-cache",
+        "bf-cache-insight",
+        "no-unload-listeners"
+      ]
+    },
+    {
+      "id": "cache",
+      "title": "Use efficient cache lifetimes",
+      "owner": "both",
+      "status": "filled",
+      "devtoolsOnly": false,
+      "file": "checkpoints/cache.md",
+      "insights": [
+        "cache-insight",
+        "uses-long-cache-ttl"
+      ]
+    },
+    {
+      "id": "css-js-block",
+      "title": "Render-blocking requests",
+      "owner": "front",
+      "status": "filled",
+      "devtoolsOnly": false,
+      "file": "checkpoints/css-js-block.md",
+      "insights": [
+        "first-contentful-paint",
+        "render-blocking-insight",
+        "render-blocking-resources"
+      ]
+    },
+    {
+      "id": "css-selector",
+      "title": "CSS selector costs (recalculate style)",
+      "owner": "front",
+      "status": "filled",
+      "devtoolsOnly": true,
+      "file": "checkpoints/css-selector.md",
+      "insights": [
+        "slow-css-selector"
+      ]
+    },
+    {
+      "id": "css-unused",
+      "title": "Unused CSS",
+      "owner": "front",
+      "status": "filled",
+      "devtoolsOnly": false,
+      "file": "checkpoints/css-unused.md",
+      "insights": [
+        "unminified-css",
+        "unused-css-rules"
+      ]
+    },
+    {
+      "id": "cwv-cls",
+      "title": "Cumulative Layout Shift (CLS) / layout shift culprits",
+      "owner": "front",
+      "status": "filled",
+      "devtoolsOnly": false,
+      "file": "checkpoints/cwv-cls.md",
+      "insights": [
+        "cls-culprits-insight",
+        "layout-shift-culprits"
+      ]
+    },
+    {
+      "id": "cwv-inp",
+      "title": "Interaction to Next Paint (INP) / INP breakdown",
+      "owner": "front",
+      "status": "filled",
+      "devtoolsOnly": false,
+      "file": "checkpoints/cwv-inp.md",
+      "insights": [
+        "estimated-input-latency",
+        "inp-breakdown-insight",
+        "interaction-to-next-paint",
+        "long-animation-frame",
+        "soft-navigation-insight",
+        "uses-passive-event-listeners"
+      ]
+    },
+    {
+      "id": "cwv-lcp",
+      "title": "Largest Contentful Paint (LCP) / LCP breakdown",
+      "owner": "both",
+      "status": "filled",
+      "devtoolsOnly": false,
+      "file": "checkpoints/cwv-lcp.md",
+      "insights": [
+        "largest-contentful-paint-element",
+        "lcp-breakdown-insight",
+        "lcp-discovery-insight",
+        "lcp-lazy-loaded",
+        "preload-lcp-image",
+        "prioritize-lcp-image"
+      ]
+    },
+    {
+      "id": "dom-size",
+      "title": "Avoid large DOM size",
+      "owner": "front",
+      "status": "filled",
+      "devtoolsOnly": false,
+      "file": "checkpoints/dom-size.md",
+      "insights": [
+        "dom-size",
+        "dom-size-insight"
+      ]
+    },
+    {
+      "id": "fonts",
+      "title": "Web fonts (display, metrics, preload)",
+      "owner": "front",
+      "status": "filled",
+      "devtoolsOnly": false,
+      "file": "checkpoints/fonts.md",
+      "insights": [
+        "font-display",
+        "font-display-insight"
+      ]
+    },
+    {
+      "id": "http",
+      "title": "Modern HTTP (HTTP/2 / HTTP/3)",
+      "owner": "server",
+      "status": "filled",
+      "devtoolsOnly": true,
+      "file": "checkpoints/http.md",
+      "insights": [
+        "modern-http-insight",
+        "uses-http2"
+      ]
+    },
+    {
+      "id": "img-delivery",
+      "title": "Improve image delivery",
+      "owner": "both",
+      "status": "filled",
+      "devtoolsOnly": false,
+      "file": "checkpoints/img-delivery.md",
+      "insights": [
+        "efficient-animated-content",
+        "image-delivery-insight",
+        "modern-image-formats",
+        "uses-responsive-images",
+        "uses-webp-images"
+      ]
+    },
+    {
+      "id": "img-encode",
+      "title": "Efficiently encode / compress images",
+      "owner": "both",
+      "status": "filled",
+      "devtoolsOnly": false,
+      "file": "checkpoints/img-encode.md",
+      "insights": [
+        "uses-optimized-images"
+      ]
+    },
+    {
+      "id": "img-lazy",
+      "title": "Lazy-load offscreen images (never lazy LCP)",
+      "owner": "front",
+      "status": "filled",
+      "devtoolsOnly": false,
+      "file": "checkpoints/img-lazy.md",
+      "insights": [
+        "lcp-lazy-loaded",
+        "offscreen-images"
+      ]
+    },
+    {
+      "id": "img-size",
+      "title": "Unsized images / width & height / aspect-ratio",
+      "owner": "front",
+      "status": "filled",
+      "devtoolsOnly": false,
+      "file": "checkpoints/img-size.md",
+      "insights": [
+        "unsized-images"
+      ]
+    },
+    {
+      "id": "js-duplicated",
+      "title": "Duplicated JavaScript",
+      "owner": "front",
+      "status": "filled",
+      "devtoolsOnly": false,
+      "file": "checkpoints/js-duplicated.md",
+      "insights": [
+        "duplicated-javascript-insight"
+      ]
+    },
+    {
+      "id": "js-unused",
+      "title": "Unused JavaScript",
+      "owner": "front",
+      "status": "filled",
+      "devtoolsOnly": false,
+      "file": "checkpoints/js-unused.md",
+      "insights": [
+        "no-document-write",
+        "unminified-javascript",
+        "unused-javascript"
+      ]
+    },
+    {
+      "id": "lcp-discovery",
+      "title": "LCP request discovery",
+      "owner": "front",
+      "status": "filled",
+      "devtoolsOnly": false,
+      "file": "checkpoints/lcp-discovery.md",
+      "insights": [
+        "lcp-discovery-insight",
+        "prioritize-lcp-image"
+      ]
+    },
+    {
+      "id": "legacy-js",
+      "title": "Legacy JavaScript / polyfills",
+      "owner": "front",
+      "status": "filled",
+      "devtoolsOnly": false,
+      "file": "checkpoints/legacy-js.md",
+      "insights": [
+        "legacy-javascript",
+        "legacy-javascript-insight"
+      ]
+    },
+    {
+      "id": "main-thread",
+      "title": "Minimize main-thread work / long tasks",
+      "owner": "front",
+      "status": "filled",
+      "devtoolsOnly": false,
+      "file": "checkpoints/main-thread.md",
+      "insights": [
+        "bootup-time",
+        "long-animation-frame",
+        "long-tasks",
+        "mainthread-work-breakdown",
+        "max-potential-fid",
+        "total-blocking-time",
+        "uses-passive-event-listeners"
+      ]
+    },
+    {
+      "id": "net-tree",
+      "title": "Network dependency tree",
+      "owner": "both",
+      "status": "filled",
+      "devtoolsOnly": false,
+      "file": "checkpoints/net-tree.md",
+      "insights": [
+        "critical-request-chains",
+        "network-dependency-tree-insight",
+        "uses-rel-preconnect"
+      ]
+    },
+    {
+      "id": "pattern-hero",
+      "title": "Above-the-fold / hero media priority",
+      "owner": "front",
+      "status": "filled",
+      "devtoolsOnly": false,
+      "file": "checkpoints/pattern-hero.md",
+      "insights": []
+    },
+    {
+      "id": "pattern-inject",
+      "title": "Dynamically injected content",
+      "owner": "front",
+      "status": "filled",
+      "devtoolsOnly": false,
+      "file": "checkpoints/pattern-inject.md",
+      "insights": []
+    },
+    {
+      "id": "pattern-motion",
+      "title": "Animation CLS-safety",
+      "owner": "front",
+      "status": "filled",
+      "devtoolsOnly": false,
+      "file": "checkpoints/pattern-motion.md",
+      "insights": [
+        "non-composited-animations"
+      ]
+    },
+    {
+      "id": "pattern-skeleton",
+      "title": "Skeleton ↔ real content height parity",
+      "owner": "front",
+      "status": "filled",
+      "devtoolsOnly": false,
+      "file": "checkpoints/pattern-skeleton.md",
+      "insights": []
+    },
+    {
+      "id": "preload",
+      "title": "Preloads / critical request chain",
+      "owner": "front",
+      "status": "filled",
+      "devtoolsOnly": false,
+      "file": "checkpoints/preload.md",
+      "insights": [
+        "critical-request-chains",
+        "preload-lcp-image"
+      ]
+    },
+    {
+      "id": "reflow",
+      "title": "Forced reflow / layout thrashing",
+      "owner": "front",
+      "status": "filled",
+      "devtoolsOnly": false,
+      "file": "checkpoints/reflow.md",
+      "insights": [
+        "forced-reflow-insight"
+      ]
+    },
+    {
+      "id": "third-party-facades",
+      "title": "Lazy-load third-party resources with facades",
+      "owner": "front",
+      "status": "filled",
+      "devtoolsOnly": false,
+      "file": "checkpoints/third-party-facades.md",
+      "insights": [
+        "third-party-facades"
+      ]
+    },
+    {
+      "id": "third-party",
+      "title": "Third-party code / origins",
+      "owner": "both",
+      "status": "filled",
+      "devtoolsOnly": false,
+      "file": "checkpoints/third-party.md",
+      "insights": [
+        "third-parties-insight",
+        "third-party-summary"
+      ]
+    },
+    {
+      "id": "total-byte-weight",
+      "title": "Total page weight / payload budget",
+      "owner": "both",
+      "status": "filled",
+      "devtoolsOnly": false,
+      "file": "checkpoints/total-byte-weight.md",
+      "insights": [
+        "network-requests",
+        "total-byte-weight",
+        "uses-text-compression"
+      ]
+    },
+    {
+      "id": "ttfb",
+      "title": "Document request latency / TTFB",
+      "owner": "server",
+      "status": "filled",
+      "devtoolsOnly": false,
+      "file": "checkpoints/ttfb.md",
+      "insights": [
+        "document-latency-insight",
+        "network-rtt",
+        "network-server-latency",
+        "redirects",
+        "server-response-time",
+        "uses-text-compression"
+      ]
+    },
+    {
+      "id": "viewport-mobile",
+      "title": "Optimize viewport for mobile",
+      "owner": "front",
+      "status": "filled",
+      "devtoolsOnly": false,
+      "file": "checkpoints/viewport-mobile.md",
+      "insights": [
+        "viewport-insight"
+      ]
+    }
+  ]
+}
