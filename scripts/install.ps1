@@ -5,7 +5,7 @@
 #   pwsh -File scripts/install.ps1 -Destination <path>
 #   pwsh -File scripts/install.ps1 -Force          # overwrite an existing install
 #
-# Copies the runtime files only; scripts/ and .github/ stay in the repo.
+# Copies the runtime files and the image helper; other repo tooling stays here.
 [CmdletBinding()]
 param(
     [string]$Destination,
@@ -52,6 +52,10 @@ $checkpointsDestination = Join-Path $Destination 'checkpoints'
 New-Item -ItemType Directory -Force -Path $checkpointsDestination | Out-Null
 Get-ChildItem -Path $checkpointsDestination -Filter *.md -ErrorAction SilentlyContinue | Remove-Item -Force
 Copy-Item (Join-Path $repo 'checkpoints') -Destination $Destination -Recurse -Force
+
+$scriptsDestination = Join-Path $Destination 'scripts'
+New-Item -ItemType Directory -Force -Path $scriptsDestination | Out-Null
+Copy-Item (Join-Path $repo 'scripts/responsive-webp.py') -Destination $scriptsDestination -Force
 
 $count = (Get-ChildItem -Path $checkpointsDestination -Filter *.md).Count
 Write-Host "Installed $name -> $Destination ($count checkpoints)"

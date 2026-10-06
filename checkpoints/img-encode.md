@@ -26,6 +26,7 @@ Stop when further quality reduction is a **design/brand decision**, or assets ar
 1. Re-encode with ImageOptim / Squoosh / imagemin / optimizer quality.
 2. Set default optimizer quality in framework config.
 3. Enforce CMS upload max dimensions server-side if editors upload 4K heroes.
+4. For local JPEG/PNG without a build-time optimizer, [`../scripts/responsive-webp.py`](../scripts/responsive-webp.py) creates WebP width variants, reports PSNR, and accepts an optional minimum. Review the result visually before replacing a production asset.
 
 ### Hint / example (optional)
 

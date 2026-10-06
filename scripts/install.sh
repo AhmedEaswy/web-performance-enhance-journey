@@ -5,7 +5,7 @@
 #   ./scripts/install.sh --destination <path>
 #   ./scripts/install.sh --force               # overwrite an existing install
 #
-# Copies the runtime files only; scripts/ and .github/ stay in the repo.
+# Copies the runtime files and the image helper; other repo tooling stays here.
 set -euo pipefail
 
 name='performance-enhance-journey'
@@ -53,6 +53,8 @@ done
 # Replace the checkpoint set wholesale so removed/renamed checkpoints do not linger.
 find "$destination/checkpoints" -maxdepth 1 -name '*.md' -delete
 cp -f "$repo"/checkpoints/*.md "$destination/checkpoints/"
+mkdir -p "$destination/scripts"
+cp -f "$repo/scripts/responsive-webp.py" "$destination/scripts/"
 
 count="$(find "$destination/checkpoints" -maxdepth 1 -name '*.md' | wc -l | tr -d ' ')"
 echo "Installed $name -> $destination ($count checkpoints)"

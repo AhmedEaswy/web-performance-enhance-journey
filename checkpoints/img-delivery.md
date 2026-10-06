@@ -29,6 +29,7 @@ Stop when images are already modern format + roughly display-sized and remaining
 2. Prefer AVIF/WebP; GIF → video for animation.
 3. Tunable quality (~55–70 for cards; drop when PSI “increase compression” is only a few KiB over the ignore floor).
 4. Allowlist hosts + serve via optimizer (`cache`, `third-party`).
+5. If no optimizer exists and assets are owned locally, generate responsive WebP candidates with [`../scripts/responsive-webp.py`](../scripts/responsive-webp.py). Keep the source, skip upscaling, wire `srcset`/`sizes`, and inspect output at actual display sizes. The script reports decoded PSNR and can enforce pixel-identical resized output with `--lossless`; neither replaces visual review of brand art.
 
 ### Hint / example (optional)
 

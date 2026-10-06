@@ -4,7 +4,7 @@ A Cursor Agent Skill for improving Google PageSpeed Insights / Lighthouse / Core
 
 It works for **front-end**, **backend**, and **full-stack** developers. Stack-agnostic: Nuxt, React, Vue, Blade, Node, Laravel, plain HTML, CDN/edge configs, and similar.
 
-- No runtime dependencies — the playbook itself is plain markdown.
+- The playbook is plain markdown. Its optional responsive WebP helper needs Python, Pillow, and Pillow WebP support.
 - 32 filled checkpoints, one file each, one shared shape, an explicit ownership model.
 - An insight → checkpoint routing table, so a report lands on the right fix instead of a guess.
 - A verification protocol, because "it improved" needs a median, not an opinion.
@@ -51,6 +51,7 @@ Checkpoints cover CLS, LCP, INP, TTFB, images, fonts, JS/CSS, cache, HTTP, back/
 - [`routing.md`](routing.md) — Lighthouse audit / Chrome insight id → checkpoint id.
 - [`verification.md`](verification.md) — how to measure and prove a change.
 - [`checkpoints.md`](checkpoints.md) — checkpoint shape, authoring rules, front-vs-server triage.
+- [`scripts/responsive-webp.py`](scripts/responsive-webp.py) — optional local JPEG/PNG to responsive WebP conversion with a decoded quality check.
 
 ## Who it is for
 
@@ -129,10 +130,10 @@ The installer is a convenience, not a requirement — the manual copy below does
 
 ### Manual copy
 
-Copy the runtime files **and the `checkpoints/` folder** into the chosen `performance-enhance-journey/` folder:
+Copy the runtime files, the `checkpoints/` folder, and the image helper into the chosen `performance-enhance-journey/` folder:
 
 ```text
-SKILL.md  checkpoints.md  routing.md  verification.md  checkpoints/   (README.md and LICENSE optional)
+SKILL.md  checkpoints.md  routing.md  verification.md  checkpoints/  scripts/responsive-webp.py   (README.md and LICENSE optional)
 ```
 
 Windows:
@@ -143,6 +144,8 @@ $dst = "$env:LOCALAPPDATA\Cursor\AgentStores\cursor_agent_stores\<store-id>\file
 New-Item -ItemType Directory -Force $dst | Out-Null
 Copy-Item "$src\SKILL.md","$src\checkpoints.md","$src\routing.md","$src\verification.md","$src\README.md","$src\LICENSE" $dst -Force
 Copy-Item "$src\checkpoints" $dst -Recurse -Force
+New-Item -ItemType Directory -Force "$dst\scripts" | Out-Null
+Copy-Item "$src\scripts\responsive-webp.py" "$dst\scripts" -Force
 ```
 
 macOS / Linux:
@@ -153,9 +156,12 @@ cp web-performance-enhance-journey/{SKILL.md,checkpoints.md,routing.md,verificat
    ~/.cursor/skills/performance-enhance-journey/
 cp -R web-performance-enhance-journey/checkpoints \
    ~/.cursor/skills/performance-enhance-journey/
+mkdir -p ~/.cursor/skills/performance-enhance-journey/scripts
+cp web-performance-enhance-journey/scripts/responsive-webp.py \
+   ~/.cursor/skills/performance-enhance-journey/scripts/
 ```
 
-Do **not** copy `scripts/` or `.github/` into the skill folder — they are repo tooling, not part of the skill.
+The other scripts and `.github/` are repository tooling; the WebP helper is the only script needed at skill runtime.
 
 ### Invoke it
 
@@ -172,7 +178,7 @@ You can also just name it in a sentence ("use the performance-enhance-journey sk
 ## Install tips
 
 - **Keep the folder name exact.** `performance-enhance-journey` must match the `name:` in `SKILL.md`. Renaming the folder to something friendlier makes the skill harder to resolve.
-- **Minimum files are six plus a folder.** `SKILL.md`, `checkpoints.md`, `routing.md`, `verification.md`, and the whole `checkpoints/` directory are required. `README.md` and `LICENSE` are documentation only and can be safely omitted.
+- **Include the image helper.** The playbook needs `SKILL.md`, `checkpoints.md`, `routing.md`, `verification.md`, the whole `checkpoints/` directory, and `scripts/responsive-webp.py`. `README.md` and `LICENSE` are documentation only.
 - **`checkpoints/` must come along.** Copying only `SKILL.md` leaves the index pointing at files that do not exist; the agent will report the routing but be unable to open any checkpoint body.
 - **Do not install into `~/.cursor/skills-cursor/`.** That directory is reserved for Cursor's built-in skills and is managed automatically; put yours in an Agent Store (Option A) or `~/.cursor/skills/` (Option B).
 - **Avoid double nesting.** The common mistake is copying the *repo* folder inside the skill folder, producing `.../performance-enhance-journey/web-performance-enhance-journey/SKILL.md`. `SKILL.md` must sit directly inside the skill folder.
@@ -248,7 +254,17 @@ It also has ready-to-run recipes: the PSI API, Lighthouse CLI, Lighthouse CI bud
 
 ## Tooling
 
-Two dependency-free Node scripts keep the package honest. Neither runs at skill runtime — they are for contributing.
+The optional image helper runs on an owned JPEG or PNG when a project has no image optimizer:
+
+```bash
+python -m pip install Pillow
+python scripts/responsive-webp.py hero.jpg --out public/images/hero --widths 480,960,1440 --quality 88
+# Add --lossless to require identical pixels after each resize (files may be larger).
+```
+
+It preserves the source, refuses to upscale or overwrite, applies EXIF orientation, retains ICC color profiles, and reports output size and decoded PSNR. Set `--min-psnr` when the project has an agreed numeric floor; a universal cutoff would reject some detailed images unnecessarily. PSNR does not establish perceived equivalence: inspect important art at each intended display size before wiring `srcset`/`sizes`. The HTML markup and a same-device performance check remain part of the image delivery fix.
+
+Two dependency-free Node scripts keep the package honest. They are for contributing.
 
 ```bash
 node scripts/build-index.mjs          # regenerate checkpoints.json from checkpoints/ + routing.md
@@ -269,7 +285,7 @@ web-performance-enhance-journey/
 ├── routing.md           # Insight / audit id → checkpoint id
 ├── verification.md      # Measurement protocol and proof rules
 ├── checkpoints.json     # GENERATED index (do not hand-edit)
-├── scripts/             # build-index.mjs, validate.mjs, split-checkpoints.mjs, install.{ps1,sh}
+├── scripts/             # responsive-webp.py plus build, validate, migration, install tooling
 ├── .github/workflows/   # validate.yml
 ├── CHANGELOG.md
 ├── CONTRIBUTING.md
